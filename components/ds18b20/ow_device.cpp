@@ -10,6 +10,7 @@
 #include <array>
 #include <cstdint>
 #include <span>
+#include <utility>
 
 static bool IRAM_ATTR rx_event_callback(rmt_channel_handle_t channel,
                                         rmt_rx_done_event_data_t const* data,
@@ -46,7 +47,7 @@ namespace DS18B20 {
         this->initialized = false;
     }
 
-    void OWDevice::write16(std::uint16_t const write_data) noexcept
+    void OWDevice::write16(std::uint16_t const write_data) const noexcept
     {
         if (!this->initialized) {
             return;
@@ -59,7 +60,7 @@ namespace DS18B20 {
         rmt_tx_wait_all_done(this->tx_channel, RMT_TIMEOUT_MS);
     }
 
-    void OWDevice::write64(std::uint64_t const write_data) noexcept
+    void OWDevice::write64(std::uint64_t const write_data) const noexcept
     {
         if (!this->initialized) {
             return;
@@ -72,7 +73,7 @@ namespace DS18B20 {
         rmt_tx_wait_all_done(this->tx_channel, RMT_TIMEOUT_MS);
     }
 
-    std::uint8_t OWDevice::read8() noexcept
+    std::uint8_t OWDevice::read8() const noexcept
     {
         if (!this->initialized) {
             std::unreachable();
@@ -85,12 +86,12 @@ namespace DS18B20 {
         this->write16(0xFF);
 
         rmt_rx_done_event_data_t event;
-            xQueueReceive(this->rx_queue, &event, pdMS_TO_TICKS(RMT_TIMEOUT_MS);
+        xQueueReceive(this->rx_queue, &event, pdMS_TO_TICKS(RMT_TIMEOUT_MS));
 
-            return parse_symbols(Symbols{event.received_symbols, event.num_symbols});
+        return parse_symbols(Symbols{event.received_symbols, event.num_symbols});
     }
 
-    void OWDevice::reset() noexcept
+    void OWDevice::reset() const noexcept
     {
         if (!this->initialized) {
             return;

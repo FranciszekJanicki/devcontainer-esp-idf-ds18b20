@@ -32,16 +32,11 @@ namespace DS18B20 {
         using Scaled = float;
         using Raw = std::int16_t;
 
-        static inline std::array<StackType_t, sizeof(rmt_rx_done_event_data_t)> queue_storage;
-        static inline StaticQueue_t static_queue;
-        static inline OWDevice ow_device{
-            gpio_num_t::GPIO_NUM_0,
-            xQueueCreateStatic(1UL, sizeof(rmt_rx_done_event_data_t), queue_storage.data(), &static_queue)};
-
-        [[nodiscard]] OptionalRaw get_temperature_raw() const noexcept;
-        [[nodiscard]] OptionalScaled get_temperature_scaled() const noexcept;
+        [[nodiscard]] Raw get_temperature_raw() const noexcept;
+        [[nodiscard]] Scaled get_temperature_scaled() const noexcept;
 
         DevAddress address{};
+        OWDevice ow_device{};
     };
 
 }; // namespace DS18B20

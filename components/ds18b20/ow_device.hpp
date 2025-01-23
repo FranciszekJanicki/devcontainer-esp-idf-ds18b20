@@ -29,10 +29,10 @@ namespace DS18B20 {
 
         ~OWDevice() noexcept;
 
-        void reset() noexcept;
-        void write16(std::uint16_t const data) noexcept;
-        void write64(std::uint64_t const data) noexcept;
-        [[nodiscard]] std::uint8_t read8() noexcept;
+        void reset() const noexcept;
+        void write16(std::uint16_t const data) const noexcept;
+        void write64(std::uint64_t const data) const noexcept;
+        [[nodiscard]] std::uint8_t read8() const noexcept;
 
     private:
         static std::uint8_t parse_symbols(Symbols const symbols) noexcept;
@@ -96,7 +96,7 @@ namespace DS18B20 {
         rmt_encoder_handle_t copy_encoder{nullptr};
         rmt_encoder_handle_t bytes_encoder{nullptr};
 
-        RXBuffer rx_buffer{};
+        mutable RXBuffer rx_buffer{};
     };
 
 }; // namespace DS18B20

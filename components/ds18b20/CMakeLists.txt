@@ -1,11 +1,11 @@
 idf_component_register(
     SRCS
         "ds18b20.cpp"
-        "onewire.cpp"
-        "expected.hpp"
+        "ow_device.cpp"
         "ds18b20_task.cpp"
     INCLUDE_DIRS
         "."
     REQUIRES 
         driver
+        freertos
 )
