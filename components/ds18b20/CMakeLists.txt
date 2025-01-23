@@ -1,0 +1,11 @@
+idf_component_register(
+    SRCS
+        "ds18b20.cpp"
+        "onewire.cpp"
+        "expected.hpp"
+        "ds18b20_task.cpp"
+    INCLUDE_DIRS
+        "."
+    REQUIRES 
+        driver
+)

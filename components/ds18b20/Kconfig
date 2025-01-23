@@ -1,0 +1,7 @@
+menu "Example Component Config"
+    config EXAMPLE_COMPONENT_FLAG
+    bool "Example component flag"
+    default n
+    help
+        Set this flag to print extra message.
+endmenu

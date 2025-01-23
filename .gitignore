@@ -1,0 +1,7 @@
+build/
+
+components/putrl_proto/nanopb/
+components/putrl_proto/*.h
+components/putrl_proto/*.c
+
+gitlab-token.txt

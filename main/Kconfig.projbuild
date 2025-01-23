@@ -1,0 +1,7 @@
+menu "Example configuration"
+    config EXAMPLE_VALUE
+        int "Example config value"
+        default 420
+        help
+            This is example config value help.
+endmenu

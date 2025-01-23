@@ -1,0 +1,43 @@
+---
+variables:
+  ESP_IDF_IMAGE: espressif/idf:v5.2
+
+stages:
+  - lint
+  - build
+
+lint-job:
+  stage: lint
+  image: $ESP_IDF_IMAGE
+  before_script:
+    - apt-get update && apt-get install -y make cppcheck=2.7-1 clang-format python3-pip
+    - pip3 install -r requirements/linters.txt --break-system-packages
+  script:
+    - make yamllint
+    - make lint
+
+build-job:
+  stage: build
+  image: $ESP_IDF_IMAGE
+  variables:
+    GITLAB_URL: "https://gitlab.com"
+    PROJECT_ID: "56202787"
+    BRANCH_NAME: "v1.3.0"
+    JOB_NAME: "compile-nanopb"
+    PROTO_COMPONENT_DIR: components/putrl_proto
+  before_script:
+    - >-
+      curl
+      --location
+      --output /tmp/artifacts.zip
+      --header "JOB-TOKEN: $CI_JOB_TOKEN"
+      "$GITLAB_URL/api/v4/projects/$PROJECT_ID/jobs/artifacts/$BRANCH_NAME/download/?job=$JOB_NAME&artifact_format=zip&artifact_type=archive"
+    - unzip /tmp/artifacts.zip -d "/tmp"
+    - rm -rf $PROTO_COMPONENT_DIR/nanopb $PROTO_COMPONENT_DIR/*.c $PROTO_COMPONENT_DIR/*.h
+    - cp /tmp/proto-files/*c $PROTO_COMPONENT_DIR
+    - cp /tmp/proto-files/*h $PROTO_COMPONENT_DIR
+    - mv /tmp/proto-files/nanopb $PROTO_COMPONENT_DIR
+    - rm /tmp/artifacts.zip
+    - rm -rf /tmp/proto-files
+  script:
+    - make build

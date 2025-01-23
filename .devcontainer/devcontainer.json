@@ -1,0 +1,39 @@
+{
+	"name": "ESP-IDF",
+    "build": {
+		"dockerfile": "Dockerfile"
+	},
+    "mounts": [
+		"source=extensionCache,target=/root/.vscode-server/extensions,type=volume"
+	],
+	"customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "idf.espIdfPath": "/opt/esp/idf",
+                "idf.customExtraPaths": "",
+                "idf.pythonBinPath": "/opt/esp/python_env/idf5.3_py3.10_env/bin/python",
+                "idf.toolsPath": "/opt/esp",
+                "idf.gitPath": "/usr/bin/git",
+                "idf.showOnboardingOnInit": false,
+                "idf.port": "/dev/ttyUSB0"
+            },
+            "extensions": [
+                "espressif.esp-idf-extension",
+                "ms-vscode.cmake-tools",
+                "ms-vscode.cpptools-extension-pack",
+                "ms-vscode.cmake-tools",
+                "twxs.cmake",
+                "ms-vscode.makefile-tools",
+                "mhutchie.git-graph",
+                "xaver.clang-format"
+            ]
+        }
+	},
+	"runArgs": [
+        "--privileged",
+		"--device=/dev/ttyUSB0"
+	],
+    "remoteUser": "esp",
+    "postCreateCommand": "make setup"
+}
